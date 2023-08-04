@@ -1,7 +1,15 @@
-import React from "react";
+import { NavLink } from "react-router-dom";
+import { slide as Menu } from "react-burger-menu";
 
 function Nav() {
-  return <div>Nav</div>;
+  return (
+    <div>
+      <Menu>
+        <NavLink to={"/"}>Home</NavLink>
+        <NavLink to={"/register"}>Register</NavLink>
+      </Menu>
+    </div>
+  );
 }
 
 export default Nav;
