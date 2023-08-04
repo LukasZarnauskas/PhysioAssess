@@ -7,7 +7,7 @@ import Register from "./pages/Register";
 
 const Container = styled.div`
   background-color: #f4f4f4;
-  color: whitesmoke;
+  color: #000;
 `;
 function App() {
   return (
