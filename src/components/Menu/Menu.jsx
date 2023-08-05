@@ -34,6 +34,11 @@ const StyledLink = styled(NavLink)`
   font-weight: bold;
   letter-spacing: 0.5rem;
   text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+    color: #0e4ebd;
+  }
 `;
 
 function Menu({ setMenu, menuOpen }) {
