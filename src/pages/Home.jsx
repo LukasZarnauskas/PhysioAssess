@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import ValidMsg from "../components/ui/ValidMsg";
 import Button from "../components/ui/Button";
+
 const Container = styled.div``;
 const H1 = styled.h1`
   color: #333;
@@ -28,13 +29,14 @@ const Input = styled.input`
 function Home() {
   const formik = useFormik({
     initialValues: {
-      username: "",
+      email: "",
       password: "",
     },
     validationSchema: Yup.object({
-      username: Yup.string()
-        .required("Username is required")
-        .min(6, "Username must be at least 6 characters long"),
+      email: Yup.string()
+        .required("Email is required")
+        .min(6, "Email must be at least 6 characters long")
+        .email("Email is not valid"),
       password: Yup.string()
         .required("Password is required")
         .min(6, "Password must be at least 6 characters long"),
@@ -43,22 +45,23 @@ function Home() {
       console.log(values);
     },
   });
+
   return (
     <Container>
       <H1>Prisijungti</H1>
 
       <Form onSubmit={formik.handleSubmit}>
-        <Label htmlFor="username">Vartotojo vardas</Label>
+        <Label htmlFor="email">El paštas</Label>
         <Input
-          type="text"
-          name="username"
-          id="username"
+          type="email"
+          name="email"
+          id="email"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.username}
+          value={formik.values.email}
         />
-        {formik.touched.username && formik.errors.username && (
-          <ValidMsg text={formik.errors.username} />
+        {formik.touched.email && formik.errors.email && (
+          <ValidMsg text={formik.errors.email} />
         )}
 
         <Label htmlFor="password">Slaptažodis</Label>

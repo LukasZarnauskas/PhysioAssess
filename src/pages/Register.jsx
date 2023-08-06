@@ -3,6 +3,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import ValidMsg from "../components/ui/ValidMsg";
 import Button from "../components/ui/Button";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 const Container = styled.div``;
 const H1 = styled.h1`
   color: #333;
@@ -28,14 +30,16 @@ const Input = styled.input`
 function Register() {
   const formik = useFormik({
     initialValues: {
-      username: "",
+      email: "",
       password: "",
       repeatPassword: "",
     },
     validationSchema: Yup.object({
-      username: Yup.string()
-        .required("Username is required")
-        .min(6, "Username must be at least 6 characters long"),
+      email: Yup.string()
+        .required("Email is required")
+        .min(6, "Email must be at least 6 characters long")
+        .email("Email is not valid"),
+
       password: Yup.string()
         .required("Password is required")
         .min(6, "Password must be at least 6 characters long"),
@@ -44,25 +48,39 @@ function Register() {
         .oneOf([Yup.ref("password"), null], "Passwords must match"),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      registerUser(values.email, values.password);
     },
   });
+  function registerUser(email, password) {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        // const user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        // ..
+      });
+  }
   return (
     <Container>
       <H1>Registracija</H1>
-
+      <ValidMsg text={errorMessage? : null} />
       <Form onSubmit={formik.handleSubmit}>
-        <Label htmlFor="username">Sukurkite vartotojo vardą</Label>
+        <Label htmlFor="email">El. paštas</Label>
         <Input
-          type="text"
-          name="username"
-          id="username"
+          type="email"
+          name="email"
+          id="email"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.username}
+          value={formik.values.email}
         />
-        {formik.touched.username && formik.errors.username && (
-          <ValidMsg text={formik.errors.username} />
+        {formik.touched.email && formik.errors.email && (
+          <ValidMsg text={formik.errors.email} />
         )}
 
         <Label htmlFor="password">Sukurkite slaptažodį</Label>
