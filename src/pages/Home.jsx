@@ -3,6 +3,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import ValidMsg from "../components/ui/ValidMsg";
 import Button from "../components/ui/Button";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebase";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div``;
 const H1 = styled.h1`
@@ -42,10 +45,24 @@ function Home() {
         .min(6, "Password must be at least 6 characters long"),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      login(values.email, values.password);
     },
   });
-
+  const navigate = useNavigate();
+  function login(email, password) {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        // const user = userCredential.user;
+        // ...
+        navigate("/main");
+        console.log(userCredential);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  }
   return (
     <Container>
       <H1>Prisijungti</H1>

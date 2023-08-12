@@ -61,14 +61,15 @@ function Register() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-
+        console.log(errorCode);
         // ..
       });
   }
+
   return (
     <Container>
       <H1>Registracija</H1>
-      <ValidMsg text={errorMessage? : null} />
+
       <Form onSubmit={formik.handleSubmit}>
         <Label htmlFor="email">El. paštas</Label>
         <Input
